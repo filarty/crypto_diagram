@@ -1,12 +1,18 @@
-from collections import deque
+from main import Diagramm
 
-numbers = deque(maxlen=3)
-
-for i in range(10):
-    numbers.append(i)
+diagram = Diagramm()
 
 
 
 
 
-print(numbers)
+if __name__ == "__main__":
+    diagram.x_time = 10
+    diagram.x_time = 30
+    diagram.x_time = 50
+    assert diagram.x_time[0] == 10
+    print("test 1 pass [+]")
+    assert diagram.x_time[1] == 30
+    print("test 2 pass [+]")
+    assert diagram.x_time[2] == 50
+    print("test 3 pass [+]")

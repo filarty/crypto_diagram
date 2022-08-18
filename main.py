@@ -1,10 +1,13 @@
-import matplotlib as mpl
+
 import matplotlib.pyplot as plt
 
-import time
+import matplotlib
+
+matplotlib.use('TkAgg')
 
 from collections import deque
 
+from random import randrange
 
 class Diagramm:
     def __init__(self) -> None:
@@ -28,21 +31,27 @@ class Diagramm:
     def y_price(self, value: int) -> None:
         self.__y_price.append(value)
 
+diagram = Diagramm()
 
-def f(x: int) -> int:
-    if x < 6:
-        return x + 2
-    return x - 2
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+fig.show()
+
+def update():
+    color = "g"
+    ax.plot(diagram.x_time, diagram.y_price, color=color)
+    fig.canvas.draw()
+    fig.canvas.start_event_loop(0.010)
+
 
 
 def main():
-    x = [0, 1, 5, 9, 15]
-    y = []
-    for i in x:
-        y.append(f(x = i))
-    fig, ax = plt.subplots()
-    ax.plot(x, y)
-    plt.show() 
+    x = 20
+    while True:
+        diagram.y_price = randrange(-100, 100)
+        diagram.x_time = x
+        update()
+        x += 10
 
 if __name__ == "__main__":
         main()
