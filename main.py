@@ -7,7 +7,7 @@ diagram.x_time = 0
 diagram.y_price = 0
 
 
-def main():
+async def main():
     x = 20
     count = 0
     diagram.create()
