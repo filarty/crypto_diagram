@@ -35,9 +35,14 @@ class Diagramm:
         self.__y_price.append(value)
 
     def animate(self, i):
-        while self.pipe.poll():
+        color = "g"
         self.__ax.clear()
-        self.__ax.plot(self.__x_time, self.__y_price)
+        if len(self.__y_price) != 0:
+            if self.__y_price[len(self.__y_price) - 1] > self.__y_price[len(self.__y_price) - 2]:
+                 color="g"
+            else:    
+                color="r"
+        self.__ax.plot(self.__x_time, self.__y_price, color=color)
         plt.xlabel("Время")
         plt.ylabel("Цена")
 

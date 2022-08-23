@@ -1,6 +1,7 @@
 import asyncio
 
 import json
+from socket import socket
 
 import websockets
 
@@ -17,13 +18,14 @@ class BinanceDiagramm:
         self.loop = asyncio.get_event_loop()
     
     async def main(self) -> json:
-        async with websockets.connect(f'wss://stream.binance.com:9443/stream?streams={self.symbol.lower()}@miniTicker') as websocket:
+        async with websockets.connect(f'wss://stream.binance.com:9443/stream?streams={self.symbol.lower()}@miniTicker', ) as websocket:
             while True:
                 data = json.loads(await websocket.recv())['data']
+                print(data)
                 event_time = time.localtime(data["E"] // 1000)
                 event_time = f"{event_time.tm_hour}:{event_time.tm_min}:{event_time.tm_sec}"
                 self.diagramm.x_time = event_time
-                self.diagramm.y_price = round(float(data['c']), 5)
+                self.diagramm.y_price = float(data['c'])
                 
     
     def run(self) -> None:
