@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 
 import matplotlib.animation
 
+import matplotlib.dates as mdate
+
 matplotlib.use('TkAgg')
 
 from collections import deque
@@ -13,25 +15,27 @@ class Diagramm:
         self.__y_price = deque(maxlen=self.__MAX_SIZE_DEQUE)
         self.__fig = plt.figure()
         self.__ax = self.__fig.add_subplot(1, 1, 1)
+        
 
     @property
-    def x_time(self) -> int:
+    def x_time(self) -> str:
         return self.__x_time
 
     @x_time.setter
-    def x_time(self, value: int) -> None:
-        self.__x_time.append(value)
+    def x_time(self, value: str) -> None:
+        x = mdate.num2date(mdate.datestr2num(value))
+        self.__x_time.append(x)
 
     @property
-    def y_price(self) -> int:
+    def y_price(self) -> float:
         return self.__y_price
 
     @y_price.setter
-    def y_price(self, value: int) -> None:
+    def y_price(self, value: float) -> None:
         self.__y_price.append(value)
 
     def animate(self, i):
-        print("dawdawd")
+        while self.pipe.poll():
         self.__ax.clear()
         self.__ax.plot(self.__x_time, self.__y_price)
         plt.xlabel("Время")

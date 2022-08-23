@@ -1,5 +1,4 @@
 import asyncio
-from concurrent.futures import thread
 
 import json
 
@@ -11,8 +10,6 @@ from Diagramm import Diagramm
 
 from threading import Thread
 
-import matplotlib.pyplot as plt
-
 class BinanceDiagramm:
     def __init__(self, symbol: str) -> None:
         self.symbol = symbol
@@ -20,15 +17,13 @@ class BinanceDiagramm:
         self.loop = asyncio.get_event_loop()
     
     async def main(self) -> json:
-        self.diagramm.update()
         async with websockets.connect(f'wss://stream.binance.com:9443/stream?streams={self.symbol.lower()}@miniTicker') as websocket:
             while True:
                 data = json.loads(await websocket.recv())['data']
                 event_time = time.localtime(data["E"] // 1000)
                 event_time = f"{event_time.tm_hour}:{event_time.tm_min}:{event_time.tm_sec}"
-                print(data['c'], event_time)
                 self.diagramm.x_time = event_time
-                self.diagramm.y_price = data['c']
+                self.diagramm.y_price = round(float(data['c']), 5)
                 
     
     def run(self) -> None:
@@ -41,4 +36,4 @@ if __name__ == "__main__":
     binance = BinanceDiagramm("ETHBTC")
     t1 = Thread(target=binance.run, daemon=True)
     t1.start()
-    plt.show()
+    binance.view()
